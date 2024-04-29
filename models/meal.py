@@ -15,3 +15,6 @@ class Meal(db.Model):
         self.description = description
         self.date_time = date_time
         self.is_diet = is_diet
+
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
