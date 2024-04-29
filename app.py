@@ -21,7 +21,7 @@ def register_meal():
                     data['date_time'], data['is_diet'])
         db.session.add(meal)
         db.session.commit()
-        return jsonify({'message': 'Refeição registrada com sucesso!'}), 200
+        return jsonify({'message': 'Refeição registrada com sucesso!'}), 201
     else:
         return jsonify({'message': 'Dados inválidos!'}), 400
 
@@ -30,6 +30,15 @@ def register_meal():
 def get_meals():
     meals = Meal.query.all()
     return jsonify({'meals': [meal.to_dict() for meal in meals], 'total': len(meals)}), 200
+
+
+@app.route('/meals/<int:meal_id>', methods=['GET'])
+def get_meal(meal_id):
+    meal = Meal.query.get(meal_id)
+    if meal:
+        return jsonify(meal.to_dict()), 200
+    else:
+        return jsonify({'message': 'Refeição não encontrada!'}), 404
 
 
 if __name__ == '__main__':
